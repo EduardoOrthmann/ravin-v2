@@ -2,6 +2,8 @@ package com.example.ravin.config;
 
 import com.example.ravin.domains.auth.TokenService;
 import com.example.ravin.domains.user.UserService;
+import com.example.ravin.exceptions.JwtSecurityException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -25,33 +26,25 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull  HttpServletResponse response,
-                                    @NonNull  FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+        try {
+            String token = tokenService.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException("O token não foi encontrado"));
+            String login = tokenService.validateToken(token);
 
-        Optional<String> token = tokenService.getTokenFromHeader(request);
+            UserDetails user = userService.loadUserByUsername(login);
 
-        if (token.isEmpty()) {
+            if (user == null) {
+                throw new EntityNotFoundException("Usuário não encontrado");
+            }
+
+            authenticate(user);
+
+        } catch (JwtSecurityException | EntityNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } finally {
             filterChain.doFilter(request, response);
-            return;
         }
-
-        String login = tokenService.validateToken(token.get());
-
-        if (login.isEmpty()) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        UserDetails user = userService.loadUserByUsername(login);
-
-        if (user == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        authenticate(user);
-
-        filterChain.doFilter(request, response);
     }
 
     private void authenticate(UserDetails user) {
