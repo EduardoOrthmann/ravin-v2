@@ -1,15 +1,14 @@
 package com.example.ravin.domains.auth;
 
-import com.example.ravin.domains.user.User;
 import com.example.ravin.dtos.AuthRegisterRequestDto;
 import com.example.ravin.dtos.AuthRequestDto;
+import com.example.ravin.exceptions.UserAlreadyExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,19 +18,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequestDto authRequest) {
-        return authService.login(authRequest)
-                .map(auth -> ResponseEntity.ok().header("Authorization", auth).build())
-                .orElse(ResponseEntity.badRequest().build());
+        return ResponseEntity.ok().header("Authorization", authService.login(authRequest)).build();
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid AuthRegisterRequestDto authRegisterRequest) {
-        User user = authService.register(authRegisterRequest);
+        return ResponseEntity.ok(authService.register(authRegisterRequest));
+    }
 
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
 
-        return ResponseEntity.ok(user);
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 }

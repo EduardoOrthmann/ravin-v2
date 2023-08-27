@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.ravin.domains.user.User;
+import com.example.ravin.exceptions.JwtSecurityException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,25 +19,27 @@ import java.util.Optional;
 public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
-    private static final String ISSUER = "ravin-api";
+
+    @Value("${jwt.issuer}")
+    private String issuer;
 
     public String generateToken(User user) {
         try {
             return JWT.create()
-                    .withIssuer(ISSUER)
+                    .withIssuer(issuer)
                     .withSubject(user.getLogin())
                     .withClaim("id", String.valueOf(user.getId()))
                     .withExpiresAt(getExpirationTime())
                     .sign(Algorithm.HMAC256(secret));
         } catch (JWTCreationException ex) {
-            throw new RuntimeException("Erro ao gerar o token", ex);
+            throw new JwtSecurityException("Erro ao gerar o token");
         }
     }
 
     public String validateToken(String token) {
         try {
             return JWT.require(Algorithm.HMAC256(secret))
-                    .withIssuer(ISSUER)
+                    .withIssuer(issuer)
                     .build()
                     .verify(token)
                     .getSubject();
