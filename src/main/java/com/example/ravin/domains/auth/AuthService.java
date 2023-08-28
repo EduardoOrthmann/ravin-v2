@@ -2,8 +2,7 @@ package com.example.ravin.domains.auth;
 
 import com.example.ravin.domains.user.User;
 import com.example.ravin.domains.user.UserService;
-import com.example.ravin.dtos.AuthRegisterRequestDto;
-import com.example.ravin.dtos.AuthRequestDto;
+import com.example.ravin.dtos.request.LoginRequestDto;
 import com.example.ravin.exceptions.UserAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,31 +15,33 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+    private static final String USER_NOT_FOUND_MESSAGE = "Usuário não encontrado";
+
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
 
-    public String login(AuthRequestDto authRequest) {
+    public String login(LoginRequestDto loginRequestDto) {
         Authentication authentication = this.authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(loginRequestDto.getLogin(), loginRequestDto.getPassword())
         );
 
         if (!authentication.isAuthenticated()) {
-            throw new EntityNotFoundException("Usuário não encontrado");
+            throw new EntityNotFoundException(USER_NOT_FOUND_MESSAGE);
         }
 
         return generateToken(authentication);
     }
 
-    public User register(AuthRegisterRequestDto authRegisterRequest) {
-        if (userService.existsByLogin(authRegisterRequest.getLogin())) {
+    public User register(User user) {
+        if (userService.existsByLogin(user.getLogin())) {
             throw new UserAlreadyExistsException();
         }
 
-        String encodedPassword = passwordEncoder.encode(authRegisterRequest.getPassword());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
 
-        return userService.save(new User(authRegisterRequest.getLogin(), encodedPassword, authRegisterRequest.getRole()));
+        return userService.save(new User(user.getLogin(), encodedPassword, user.getRole()));
     }
 
     private String generateToken(Authentication authentication) {

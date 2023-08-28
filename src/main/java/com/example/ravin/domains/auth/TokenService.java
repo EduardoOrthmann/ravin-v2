@@ -17,6 +17,11 @@ import java.util.Optional;
 
 @Service
 public class TokenService {
+    private static final String TOKEN_PREFIX = "Bearer ";
+    private static final String HEADER_STRING = "Authorization";
+    private static final String ZONE_OFFSET = "-03:00";
+    private static final String JWT_CREATION_ERROR = "Erro ao gerar o token";
+
     @Value("${jwt.secret}")
     private String secret;
 
@@ -35,7 +40,7 @@ public class TokenService {
                     .withExpiresAt(getExpirationTime())
                     .sign(Algorithm.HMAC256(secret));
         } catch (JWTCreationException ex) {
-            throw new JwtSecurityException("Erro ao gerar o token");
+            throw new JwtSecurityException(JWT_CREATION_ERROR);
         }
     }
 
@@ -47,18 +52,18 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException ex) {
-            throw new JwtSecurityException("Token inválido");
+            throw new JwtSecurityException();
         }
     }
 
     private Instant getExpirationTime() {
-        return LocalDateTime.now().plusMinutes(Integer.parseInt(expiration)).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(Integer.parseInt(expiration)).toInstant(ZoneOffset.of(ZONE_OFFSET));
     }
 
     public Optional<String> getTokenFromHeader(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(HEADER_STRING);
 
-        if (header == null || !header.startsWith("Bearer ")) {
+        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             return Optional.empty();
         }
 
