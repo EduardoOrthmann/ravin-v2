@@ -23,6 +23,9 @@ public class TokenService {
     @Value("${jwt.issuer}")
     private String issuer;
 
+    @Value("${jwt.expiration}")
+    private String expiration;
+
     public String generateToken(User user) {
         try {
             return JWT.create()
@@ -49,7 +52,7 @@ public class TokenService {
     }
 
     private Instant getExpirationTime() {
-        return LocalDateTime.now().plusDays(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusMinutes(Integer.parseInt(expiration)).toInstant(ZoneOffset.of("-03:00"));
     }
 
     public Optional<String> getTokenFromHeader(HttpServletRequest request) {
