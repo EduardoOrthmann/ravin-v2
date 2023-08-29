@@ -1,4 +1,4 @@
-package com.example.ravin.security;
+package com.example.ravin.config.security;
 
 import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.domains.user.UserService;

@@ -1,4 +1,4 @@
-package com.example.ravin.security;
+package com.example.ravin.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
