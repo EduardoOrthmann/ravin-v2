@@ -1,4 +1,4 @@
-package com.example.ravin.dtos.mapper;
+package com.example.ravin.domains.dtos.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

@@ -1,9 +1,9 @@
 package com.example.ravin.domains.auth;
 
-import com.example.ravin.dtos.mapper.UserMapper;
-import com.example.ravin.dtos.request.UserRequestDto;
-import com.example.ravin.dtos.request.LoginRequestDto;
-import com.example.ravin.dtos.response.UserResponseDto;
+import com.example.ravin.domains.dtos.mapper.UserMapper;
+import com.example.ravin.domains.dtos.request.UserRequestDto;
+import com.example.ravin.domains.dtos.request.LoginRequestDto;
+import com.example.ravin.domains.dtos.response.UserResponseDto;
 import com.example.ravin.exceptions.UserAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;

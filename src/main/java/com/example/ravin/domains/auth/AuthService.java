@@ -2,8 +2,9 @@ package com.example.ravin.domains.auth;
 
 import com.example.ravin.domains.user.User;
 import com.example.ravin.domains.user.UserService;
-import com.example.ravin.dtos.request.LoginRequestDto;
+import com.example.ravin.domains.dtos.request.LoginRequestDto;
 import com.example.ravin.exceptions.UserAlreadyExistsException;
+import com.example.ravin.utils.JwtUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +20,7 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final TokenService tokenService;
+    private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
 
     public String login(LoginRequestDto loginRequestDto) {
@@ -45,6 +46,6 @@ public class AuthService {
     }
 
     private String generateToken(Authentication authentication) {
-        return tokenService.generateToken((User) authentication.getPrincipal());
+        return jwtUtils.generateToken((User) authentication.getPrincipal());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ravin.domains.auth;
+package com.example.ravin.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -8,15 +8,15 @@ import com.example.ravin.domains.user.User;
 import com.example.ravin.exceptions.JwtSecurityException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
-@Service
-public class TokenService {
+@Component
+public class JwtUtils {
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String HEADER_STRING = "Authorization";
     private static final String ZONE_OFFSET = "-03:00";

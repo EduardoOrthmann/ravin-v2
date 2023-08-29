@@ -1,4 +1,4 @@
-package com.example.ravin.dtos.response;
+package com.example.ravin.domains.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

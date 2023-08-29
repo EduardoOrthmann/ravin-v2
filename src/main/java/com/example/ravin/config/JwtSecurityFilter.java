@@ -1,6 +1,6 @@
 package com.example.ravin.config;
 
-import com.example.ravin.domains.auth.TokenService;
+import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.domains.user.UserService;
 import com.example.ravin.exceptions.JwtSecurityException;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,7 +21,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtSecurityFilter extends OncePerRequestFilter {
-    private final TokenService tokenService;
+    private final JwtUtils jwtUtils;
     private final UserService userService;
 
     @Override
@@ -29,8 +29,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            String token = tokenService.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException("O token não foi encontrado"));
-            String login = tokenService.validateToken(token);
+            String token = jwtUtils.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException("O token não foi encontrado"));
+            String login = jwtUtils.validateToken(token);
 
             UserDetails user = userService.loadUserByUsername(login);
 
