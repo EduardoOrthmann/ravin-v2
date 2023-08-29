@@ -4,27 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 @RequiredArgsConstructor
-public abstract class AbstractMapper <Entity, Request, Response> {
+public abstract class AbstractMapper <T, U, V> {
     protected final ModelMapper mapper;
 
-    public Entity toEntity(Request request) {
-        return mapper.map(request, getEntityClass());
+    public T toEntity(U u) {
+        return mapper.map(u, getEntityClass());
     }
 
-    public Response toResponse(Entity entity) {
-        return mapper.map(entity, getResponseClass());
+    public V toResponse(T t) {
+        return mapper.map(t, getResponseClass());
     }
 
-    public Request toRequest(Entity entity) {
-        return mapper.map(entity, getRequestClass());
+    public U toRequest(T t) {
+        return mapper.map(t, getRequestClass());
     }
 
-    public Entity updateEntity(Entity entity, Request request) {
-        mapper.map(request, entity);
-        return entity;
+    public T updateEntity(T t, U u) {
+        mapper.map(u, t);
+        return t;
     }
 
-    abstract Class<Entity> getEntityClass();
-    abstract Class<Request> getRequestClass();
-    abstract Class<Response> getResponseClass();
+    abstract Class<T> getEntityClass();
+    abstract Class<U> getRequestClass();
+    abstract Class<V> getResponseClass();
 }
