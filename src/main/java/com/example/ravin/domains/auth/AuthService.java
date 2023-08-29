@@ -1,9 +1,10 @@
 package com.example.ravin.domains.auth;
 
+import com.example.ravin.domains.dtos.request.UserRequestDto;
+import com.example.ravin.domains.dtos.response.UserResponseDto;
 import com.example.ravin.domains.user.User;
 import com.example.ravin.domains.user.UserService;
 import com.example.ravin.domains.dtos.request.LoginRequestDto;
-import com.example.ravin.exceptions.UserAlreadyExistsException;
 import com.example.ravin.utils.JwtUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,20 +33,12 @@ public class AuthService {
             throw new EntityNotFoundException(USER_NOT_FOUND_MESSAGE);
         }
 
-        return generateToken(authentication);
-    }
-
-    public User register(User user) {
-        if (userService.existsByLogin(user.getLogin())) {
-            throw new UserAlreadyExistsException();
-        }
-
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-
-        return userService.save(new User(user.getLogin(), encodedPassword, user.getRole()));
-    }
-
-    private String generateToken(Authentication authentication) {
         return jwtUtils.generateToken((User) authentication.getPrincipal());
+    }
+
+    public UserResponseDto register(UserRequestDto userRequestDto) {
+        String encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
+
+        return userService.save(new UserRequestDto(userRequestDto.getLogin(), encodedPassword, userRequestDto.getRole()));
     }
 }

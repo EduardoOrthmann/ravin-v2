@@ -1,6 +1,5 @@
 package com.example.ravin.domains.auth;
 
-import com.example.ravin.domains.dtos.mapper.UserMapper;
 import com.example.ravin.domains.dtos.request.UserRequestDto;
 import com.example.ravin.domains.dtos.request.LoginRequestDto;
 import com.example.ravin.domains.dtos.response.UserResponseDto;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final UserMapper mapper;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
@@ -26,9 +24,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDto> register(@RequestBody @Valid UserRequestDto authRegisterRequest) {
-        return ResponseEntity.ok(mapper.toResponse(
-                        authService.register(mapper.toEntity(authRegisterRequest))
-                ));
+        return ResponseEntity.ok(authService.register(authRegisterRequest));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
