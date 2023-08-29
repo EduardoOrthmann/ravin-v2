@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,6 +30,6 @@ public class UserService implements UserDetailsService {
             throw new UserAlreadyExistsException();
         }
 
-        return userMapper.toResponse(userRepository.save(userMapper.toEntity(userRequestDto)));
+        return mapper.toResponse(userRepository.save(mapper.toEntity(userRequestDto)));
     }
 }
