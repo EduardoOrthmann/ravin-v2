@@ -8,11 +8,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginRequestDto {
-    @NotNull
-    @NotBlank
+    @NotNull(message = "O login não pode ser nulo")
+    @NotBlank(message = "O login não pode estar em branco")
     private String login;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "A senha não pode ser nula")
+    @NotBlank(message = "A senha não pode estar em branco")
     private String password;
 }

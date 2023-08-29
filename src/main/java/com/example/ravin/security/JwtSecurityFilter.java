@@ -1,4 +1,4 @@
-package com.example.ravin.config;
+package com.example.ravin.security;
 
 import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.domains.user.UserService;
@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,11 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtSecurityFilter extends OncePerRequestFilter {
+    private static final String TOKEN_NOT_FOUND = "O token não foi encontrado";
+    private static final String USER_NOT_FOUND = "O usuário não foi encontrado";
+
     private final JwtUtils jwtUtils;
     private final UserService userService;
 
@@ -29,19 +34,19 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
-            String token = jwtUtils.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException("O token não foi encontrado"));
+            String token = jwtUtils.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException(TOKEN_NOT_FOUND));
             String login = jwtUtils.validateToken(token);
 
             UserDetails user = userService.loadUserByUsername(login);
 
             if (user == null) {
-                throw new EntityNotFoundException("Usuário não encontrado");
+                throw new EntityNotFoundException(USER_NOT_FOUND);
             }
 
             authenticate(user);
 
         } catch (JwtSecurityException | EntityNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            log.info("JwtSecurityFilter.doFilterInternal: " + ex.getMessage());
         } finally {
             filterChain.doFilter(request, response);
         }
