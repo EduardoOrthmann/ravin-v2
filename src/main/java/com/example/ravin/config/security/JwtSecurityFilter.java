@@ -40,16 +40,12 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                 throw new EntityNotFoundException(ErrorMessages.USER_NOT_FOUND);
             }
 
-            authenticate(user);
+            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
 
         } catch (JwtSecurityException | EntityNotFoundException ex) {
             log.info("JwtSecurityFilter.doFilterInternal: " + ex.getMessage());
         } finally {
             filterChain.doFilter(request, response);
         }
-    }
-
-    private void authenticate(UserDetails user) {
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
     }
 }
