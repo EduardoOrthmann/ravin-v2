@@ -36,10 +36,6 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
             UserDetails user = userService.loadUserByUsername(login);
 
-            if (user == null) {
-                throw new EntityNotFoundException(ErrorMessages.USER_NOT_FOUND);
-            }
-
             SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()));
 
         } catch (JwtSecurityException | EntityNotFoundException ex) {

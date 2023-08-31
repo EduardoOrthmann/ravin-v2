@@ -10,6 +10,7 @@ public class ErrorMessages {
 
     // User Error Messages
     public final String USER_NOT_FOUND = "O usuário não foi encontrado";
+    public final String USERNAME_NOT_FOUND = "O nome de usuário não foi encontrado";
 
     // Validation Error Messages
     public final String VALIDATION_ERROR = "Erro de validação";

@@ -4,6 +4,7 @@ import com.example.ravin.domains.dtos.mapper.UserMapper;
 import com.example.ravin.domains.dtos.request.UserRequestDto;
 import com.example.ravin.domains.dtos.response.UserResponseDto;
 import com.example.ravin.exceptions.UserAlreadyExistsException;
+import com.example.ravin.utils.constants.ErrorMessages;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +19,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username);
+        return userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USERNAME_NOT_FOUND));
     }
 
     public boolean existsByLogin(String login) {
