@@ -3,6 +3,7 @@ package com.example.ravin.exceptions.handlers;
 import com.example.ravin.domains.dtos.response.ErrorDto;
 import com.example.ravin.domains.dtos.response.FieldErrorDto;
 import com.example.ravin.exceptions.JwtSecurityException;
+import com.example.ravin.utils.constants.ErrorMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +19,7 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return ResponseEntity.badRequest().body(
                 ErrorDto.builder()
-                        .message("Erro de validação")
+                        .message(ErrorMessages.VALIDATION_ERROR)
                         .status(HttpStatus.BAD_REQUEST.toString())
                         .errors(
                                 ex.getBindingResult().getFieldErrors().stream()

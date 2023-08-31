@@ -6,6 +6,7 @@ import com.example.ravin.domains.user.User;
 import com.example.ravin.domains.user.UserService;
 import com.example.ravin.domains.dtos.request.LoginRequestDto;
 import com.example.ravin.utils.JwtUtils;
+import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,11 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private static final String USER_NOT_FOUND_MESSAGE = "Usuário não encontrado";
-
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
 
     public String login(LoginRequestDto loginRequestDto) {
@@ -30,10 +28,10 @@ public class AuthService {
         );
 
         if (!authentication.isAuthenticated()) {
-            throw new EntityNotFoundException(USER_NOT_FOUND_MESSAGE);
+            throw new EntityNotFoundException(ErrorMessages.USER_NOT_FOUND);
         }
 
-        return jwtUtils.generateToken((User) authentication.getPrincipal());
+        return JwtUtils.generateToken((User) authentication.getPrincipal());
     }
 
     public UserResponseDto register(UserRequestDto userRequestDto) {

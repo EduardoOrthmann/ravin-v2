@@ -6,22 +6,19 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.ravin.domains.user.User;
 import com.example.ravin.exceptions.JwtSecurityException;
+import com.example.ravin.utils.constants.Constants;
+import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
-@Component
+@UtilityClass
 public class JwtUtils {
-    private static final String TOKEN_PREFIX = "Bearer ";
-    private static final String HEADER_STRING = "Authorization";
-    private static final String ZONE_OFFSET = "-03:00";
-    private static final String JWT_CREATION_ERROR = "Erro ao gerar o token";
-
     @Value("${jwt.secret}")
     private String secret;
 
@@ -40,7 +37,7 @@ public class JwtUtils {
                     .withExpiresAt(getExpirationTime())
                     .sign(Algorithm.HMAC256(secret));
         } catch (JWTCreationException ex) {
-            throw new JwtSecurityException(JWT_CREATION_ERROR);
+            throw new JwtSecurityException(ErrorMessages.JWT_CREATION_ERROR);
         }
     }
 
@@ -57,13 +54,13 @@ public class JwtUtils {
     }
 
     private Instant getExpirationTime() {
-        return LocalDateTime.now().plusMinutes(Integer.parseInt(expiration)).toInstant(ZoneOffset.of(ZONE_OFFSET));
+        return LocalDateTime.now().plusMinutes(Integer.parseInt(expiration)).toInstant(ZoneOffset.of(Constants.ZONE_OFFSET));
     }
 
     public Optional<String> getTokenFromHeader(HttpServletRequest request) {
-        String header = request.getHeader(HEADER_STRING);
+        String header = request.getHeader(Constants.HEADER_STRING);
 
-        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+        if (header == null || !header.startsWith(Constants.TOKEN_PREFIX)) {
             return Optional.empty();
         }
 
