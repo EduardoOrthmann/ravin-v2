@@ -6,6 +6,7 @@ import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.constants.ErrorMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,6 +34,17 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(JwtSecurityException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ErrorDto> handleJwtSecurityException(JwtSecurityException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                ErrorDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.UNAUTHORIZED.toString())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorDto> handleAuthenticationException(AuthenticationException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())
