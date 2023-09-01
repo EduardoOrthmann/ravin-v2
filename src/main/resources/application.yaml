@@ -1,6 +1,7 @@
 spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
 jwt:
   secret: ${JWT_SECRET:11650B3065245654BE266C818A9B300512275963414E9BE69FB4EDA87CDD6BF4}
   issuer: ${JWT_ISSUER:ravin-api}

@@ -38,15 +38,17 @@ public class SecurityFilter {
                                 mvc.pattern(HttpMethod.POST, "/auth/register")
                         ).permitAll()
 
-                        // PRODUCTS
+//                        // PRODUCTS
 //                        .requestMatchers(
 //                                mvc.pattern(HttpMethod.GET, "/products"),
 //                                mvc.pattern(HttpMethod.GET, "/products/**")
 //                        ).permitAll()
 //
-//                        .requestMatchers(mvc.pattern(HttpMethod.POST, "/products")).hasRole("ADMIN")
-//                        .requestMatchers(mvc.pattern(HttpMethod.PUT, "/products/**")).hasRole("ADMIN")
-//                        .requestMatchers(mvc.pattern(HttpMethod.DELETE, "/products/**")).hasRole("ADMIN")
+//                        .requestMatchers(
+//                                mvc.pattern(HttpMethod.POST, "/products"),
+//                                mvc.pattern(HttpMethod.PUT, "/products/**"),
+//                                mvc.pattern(HttpMethod.DELETE, "/products/**")
+//                        ).hasRole(UserRole.ADMIN.toString())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
