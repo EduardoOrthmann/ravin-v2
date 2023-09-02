@@ -7,7 +7,6 @@ import com.example.ravin.domains.dtos.response.CustomerResponseDto;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerService implements CRUD<CustomerRequestDto, CustomerResponseDto, UUID> {
     private final CustomerRepository customerRepository;
-    private final PasswordEncoder passwordEncoder;
     private final CustomerMapper mapper;
 
     @Override
@@ -35,12 +33,8 @@ public class CustomerService implements CRUD<CustomerRequestDto, CustomerRespons
 
     @Override
     public CustomerResponseDto save(CustomerRequestDto request) {
-        Customer customer = mapper.toEntity(request);
-
-        customer.getUser().setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
-
         return mapper.toResponse(
-                customerRepository.save(customer)
+                customerRepository.save(mapper.toEntity(request))
         );
     }
 

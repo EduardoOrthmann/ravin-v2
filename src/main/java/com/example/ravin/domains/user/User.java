@@ -15,12 +15,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@EntityListeners(UserEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false, unique = true, updatable = false)
