@@ -1,0 +1,2 @@
+ALTER TABLE customers
+    ALTER COLUMN number TYPE VARCHAR(10) USING (number::VARCHAR(10));

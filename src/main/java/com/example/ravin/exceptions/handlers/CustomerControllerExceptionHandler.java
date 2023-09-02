@@ -1,20 +1,20 @@
 package com.example.ravin.exceptions.handlers;
 
-import com.example.ravin.domains.auth.AuthController;
+import com.example.ravin.domains.customer.CustomerController;
 import com.example.ravin.domains.dtos.response.ErrorDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(assignableTypes = {AuthController.class})
-public class AuthControllerExceptionHandler {
+@RestControllerAdvice(assignableTypes = {CustomerController.class})
+public class CustomerControllerExceptionHandler {
 
-    @ExceptionHandler(UsernameNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorDto> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+    public ResponseEntity<ErrorDto> handleEntityNotFoundException(EntityNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())

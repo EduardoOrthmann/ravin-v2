@@ -10,8 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -21,14 +19,11 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable, UserDetails {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+public class User implements UserDetails {
     @Id
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String login;
 
     @Column(nullable = false)

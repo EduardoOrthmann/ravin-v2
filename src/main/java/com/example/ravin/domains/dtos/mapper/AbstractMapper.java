@@ -3,6 +3,13 @@ package com.example.ravin.domains.dtos.mapper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
+
+/*
+    * T: Entity
+    * U: Request
+    * V: Response
+ */
 @RequiredArgsConstructor
 public abstract class AbstractMapper <T, U, V> {
     protected final ModelMapper mapper;
@@ -22,6 +29,10 @@ public abstract class AbstractMapper <T, U, V> {
     public T updateEntity(T t, U u) {
         mapper.map(u, t);
         return t;
+    }
+
+    public List<V> toResponseList(List<T> t) {
+        return t.stream().map(this::toResponse).toList();
     }
 
     abstract Class<T> getEntityClass();

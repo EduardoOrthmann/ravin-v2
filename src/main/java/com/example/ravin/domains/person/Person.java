@@ -26,6 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public abstract class Person implements Auditable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)
@@ -34,16 +35,16 @@ public abstract class Person implements Auditable {
     @Column(length = 20, columnDefinition = "CHAR(20)")
     private String phoneNumber;
 
-    @Column(nullable = false, columnDefinition = "DATE")
+    @Column(nullable = false)
     private LocalDate birthDate;
 
     @Column(nullable = false, unique = true, length = 14, columnDefinition = "CHAR(14)")
     private String cpf;
 
-    @Column(nullable = false, insertable = false)
+    @Column(nullable = false)
     private boolean isActive = true;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

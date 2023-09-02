@@ -32,24 +32,26 @@ public class SecurityFilter {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // AUTH
-                        .requestMatchers(
-                                mvc.pattern(HttpMethod.POST, "/auth/login"),
-                                mvc.pattern(HttpMethod.POST, "/auth/register")
-                        ).permitAll()
+                                // AUTH
+                                .requestMatchers(
+                                        mvc.pattern(HttpMethod.POST, "/auth/login"),
+                                        mvc.pattern(HttpMethod.POST, "/auth/register"),
+                                        mvc.pattern(HttpMethod.POST, "/auth/register/customer")
+                                ).permitAll()
 
-//                        // PRODUCTS
+                                // CUSTOMERS
+                                .requestMatchers(
+                                        mvc.pattern("/customer"),
+                                        mvc.pattern("/customer/**")
+                                ).permitAll()
+
 //                        .requestMatchers(
-//                                mvc.pattern(HttpMethod.GET, "/products"),
-//                                mvc.pattern(HttpMethod.GET, "/products/**")
-//                        ).permitAll()
-//
-//                        .requestMatchers(
-//                                mvc.pattern(HttpMethod.POST, "/products"),
-//                                mvc.pattern(HttpMethod.PUT, "/products/**"),
-//                                mvc.pattern(HttpMethod.DELETE, "/products/**")
+//                                mvc.pattern(HttpMethod.POST, "/customer"),
+//                                mvc.pattern(HttpMethod.PUT, "/customer/**"),
+//                                mvc.pattern(HttpMethod.DELETE, "/customer/**")
 //                        ).hasRole(UserRole.ADMIN.toString())
-                        .anyRequest().authenticated()
+
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
