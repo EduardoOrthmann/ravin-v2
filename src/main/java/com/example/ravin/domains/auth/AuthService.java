@@ -5,7 +5,6 @@ import com.example.ravin.domains.dtos.request.LoginRequestDto;
 import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +15,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
     private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
 
-    public String login(@Valid LoginRequestDto loginRequestDto) {
+    public String login(LoginRequestDto loginRequestDto) {
         Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequestDto.getLogin(), loginRequestDto.getPassword())
         );
@@ -26,6 +26,6 @@ public class AuthService {
             throw new EntityNotFoundException(ErrorMessages.USER_NOT_FOUND);
         }
 
-        return JwtUtils.generateToken((User) authentication.getPrincipal());
+        return jwtUtils.generateToken((User) authentication.getPrincipal());
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(assignableTypes = {CustomerController.class})
-public class CustomerControllerExceptionHandler {
+public class CustomerExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -18,7 +18,7 @@ public class CustomerControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ErrorDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.NOT_FOUND.toString())
+                        .status(HttpStatus.NOT_FOUND.name())
                         .build()
         );
     }

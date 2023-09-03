@@ -7,6 +7,7 @@ import com.example.ravin.domains.dtos.response.CustomerResponseDto;
 import com.example.ravin.utils.constants.Constants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@RequestBody @Valid LoginRequestDto request) {
-        return ResponseEntity.ok().header(Constants.HEADER_STRING, authService.login(request)).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).header(Constants.HEADER_STRING, authService.login(request)).build();
     }
 
     @PostMapping({"/register/customer", "/register"})

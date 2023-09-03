@@ -8,6 +8,9 @@ public class ErrorMessages {
     public final String JWT_CREATION_ERROR = "Erro ao gerar o token";
     public final String TOKEN_NOT_FOUND = "O token não foi encontrado";
 
+    // Authentication Error Messages
+    public final String UNSUFFICIENT_CREDENTIALS = "Credenciais insuficientes";
+
     // User Error Messages
     public final String USER_NOT_FOUND = "O usuário não foi encontrado";
     public final String USERNAME_NOT_FOUND = "O nome de usuário não foi encontrado";

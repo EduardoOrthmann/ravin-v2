@@ -1,5 +1,6 @@
 package com.example.ravin.config.security;
 
+import com.example.ravin.enums.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,15 +14,26 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityFilter {
+    public static final List<String> POST_WHITELIST = List.of(
+            "/auth/login",
+            "/auth/register",
+            "/auth/register/customer"
+    );
+
     private final JwtSecurityFilter jwtSecurityFilter;
+    private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspection) throws Exception {
@@ -32,28 +44,25 @@ public class SecurityFilter {
                 .cors(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                                // AUTH
-                                .requestMatchers(
-                                        mvc.pattern(HttpMethod.POST, "/auth/login"),
-                                        mvc.pattern(HttpMethod.POST, "/auth/register"),
-                                        mvc.pattern(HttpMethod.POST, "/auth/register/customer")
-                                ).permitAll()
+                        // WHITELIST
+                        .requestMatchers(
+                                POST_WHITELIST.stream()
+                                        .map(uri -> mvc.pattern(HttpMethod.POST, uri))
+                                        .toArray(RequestMatcher[]::new)
+                        ).permitAll()
 
-                                // CUSTOMERS
-                                .requestMatchers(
-                                        mvc.pattern("/customer"),
-                                        mvc.pattern("/customer/**")
-                                ).permitAll()
+                        // CUSTOMERS
+                        .requestMatchers(
+                                mvc.pattern("/customer"),
+                                mvc.pattern("/customer/**")
+                        ).hasRole(UserRole.ADMIN.name())
 
-//                        .requestMatchers(
-//                                mvc.pattern(HttpMethod.POST, "/customer"),
-//                                mvc.pattern(HttpMethod.PUT, "/customer/**"),
-//                                mvc.pattern(HttpMethod.DELETE, "/customer/**")
-//                        ).hasRole(UserRole.ADMIN.toString())
-
-                                .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .build();
     }
 

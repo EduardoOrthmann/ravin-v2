@@ -9,15 +9,15 @@ import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.constants.Constants;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
-@UtilityClass
+@Component
 public class JwtUtils {
     @Value("${jwt.secret}")
     private String secret;
