@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,16 +22,13 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtSecurityFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JwtUtils jwtUtils;
-    private final HandlerExceptionResolver resolver;
 
-    public JwtSecurityFilter(UserService userService, JwtUtils jwtUtils, @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
-        this.userService = userService;
-        this.jwtUtils = jwtUtils;
-        this.resolver = resolver;
-    }
+    @Qualifier("handlerExceptionResolver")
+    private final HandlerExceptionResolver resolver;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
