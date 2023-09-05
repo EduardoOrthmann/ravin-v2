@@ -4,6 +4,7 @@ import com.example.ravin.domains.dtos.response.ErrorDto;
 import com.example.ravin.domains.dtos.response.FieldErrorDto;
 import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.constants.ErrorMessages;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -62,6 +63,17 @@ public class GlobalExceptionHandler {
                 ErrorDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.UNAUTHORIZED.toString())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorDto> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.NOT_FOUND.name())
                         .build()
         );
     }

@@ -35,12 +35,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (inWhiteList(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        try  {
+        try {
             String token = jwtUtils.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException(ErrorMessages.TOKEN_NOT_FOUND));
             String login = jwtUtils.validateToken(token);
 
@@ -54,7 +49,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         }
     }
 
-    private boolean inWhiteList(HttpServletRequest request) {
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         boolean isWhiteListed = false;
 
         switch (request.getMethod()) {
