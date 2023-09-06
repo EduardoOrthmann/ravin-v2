@@ -15,6 +15,7 @@ public class ErrorMessages {
     public final String USER_NOT_FOUND = "O usuário não foi encontrado";
     public final String USERNAME_NOT_FOUND = "O nome de usuário não foi encontrado";
     public final String USER_ALREADY_EXISTS = "O usuário já existe";
+    public final String LOGIN_ALREADY_EXISTS = "O login já existe";
 
     // Person Error Messages
     public final String CPF_ALREADY_EXISTS = "CPF já cadastrado!";

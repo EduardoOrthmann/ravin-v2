@@ -2,7 +2,9 @@ package com.example.ravin.exceptions.handlers;
 
 import com.example.ravin.domains.dtos.response.ErrorDto;
 import com.example.ravin.domains.dtos.response.FieldErrorDto;
+import com.example.ravin.exceptions.CpfAlreadyExistsException;
 import com.example.ravin.exceptions.JwtSecurityException;
+import com.example.ravin.exceptions.LoginAlreadyExists;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -85,6 +87,29 @@ public class GlobalExceptionHandler {
                 ErrorDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
+                        .build()
+        );
+    }
+
+    // Person
+    @ExceptionHandler(CpfAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleCpfAlreadyExistsException(CpfAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.BAD_REQUEST.toString())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(LoginAlreadyExists.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorDto> handleLoginAlreadyExists(LoginAlreadyExists ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.BAD_REQUEST.toString())
                         .build()
         );
     }
