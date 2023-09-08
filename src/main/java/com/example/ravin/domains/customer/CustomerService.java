@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CustomerService implements CRUD<CustomerRequestDto, CustomerResponseDto, UUID> {
     private final CustomerRepository customerRepository;
-//    private final UserService userService;
+    private final UserService userService;
     private final CustomerMapper mapper;
 
     @Override
@@ -37,13 +37,13 @@ public class CustomerService implements CRUD<CustomerRequestDto, CustomerRespons
 
     @Override
     public CustomerResponseDto save(CustomerRequestDto request) {
-//        if (customerRepository.existsByCpf(request.getCpf())) {
-//            throw new CpfAlreadyExistsException();
-//        }
-//
-//        if (userService.existsByLogin(request.getUser().getLogin())) {
-//            throw new LoginAlreadyExists();
-//        }
+        if (customerRepository.existsByCpf(request.getCpf())) {
+            throw new CpfAlreadyExistsException();
+        }
+
+        if (userService.existsByLogin(request.getUser().getLogin())) {
+            throw new LoginAlreadyExists();
+        }
 
         return mapper.toResponse(
                 customerRepository.save(mapper.toEntity(request))
@@ -58,13 +58,13 @@ public class CustomerService implements CRUD<CustomerRequestDto, CustomerRespons
             throw new EntityNotFoundException(ErrorMessages.CUSTOMER_NOT_FOUND);
         }
 
-//        if (customerRepository.existsByCpf(request.getCpf()) && !customer.get().getCpf().equals(request.getCpf())) {
-//            throw new CpfAlreadyExistsException();
-//        }
-//
-//        if (userService.existsByLogin(request.getUser().getLogin()) && !customer.get().getUser().getLogin().equals(request.getUser().getLogin())) {
-//            throw new LoginAlreadyExists();
-//        }
+        if (customerRepository.existsByCpf(request.getCpf()) && !customer.get().getCpf().equals(request.getCpf())) {
+            throw new CpfAlreadyExistsException();
+        }
+
+        if (userService.existsByLogin(request.getUser().getLogin()) && !customer.get().getUser().getLogin().equals(request.getUser().getLogin())) {
+            throw new LoginAlreadyExists();
+        }
 
         return mapper.toResponse(
                 customerRepository.save(mapper.updateEntity(customer.get(), request))

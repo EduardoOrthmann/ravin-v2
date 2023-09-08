@@ -1,6 +1,5 @@
 package com.example.ravin.domains.dtos.request;
 
-import com.example.ravin.domains.person.custom_validation.UniqueCpf;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -40,7 +39,6 @@ public class PersonRequestDto {
     @NotBlank(message = "O CPF não pode estar em branco")
     @Size(min = 11, max = 14, message = "O CPF deve ter entre 11 e 14 caracteres")
     @CPF(message = "O CPF deve ser válido")
-    @UniqueCpf(message = "O CPF já está em uso")
     private String cpf;
 
     @NotNull(message = "O usuário não pode ser nulo")
