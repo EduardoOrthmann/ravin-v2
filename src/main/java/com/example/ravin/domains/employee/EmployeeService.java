@@ -4,24 +4,25 @@ import com.example.ravin.common_interfaces.CRUD;
 import com.example.ravin.domains.dtos.mapper.EmployeeMapper;
 import com.example.ravin.domains.dtos.request.EmployeeRequestDto;
 import com.example.ravin.domains.dtos.response.EmployeeResponseDto;
+import com.example.ravin.domains.person.AbstractPersonService;
 import com.example.ravin.domains.user.UserService;
-import com.example.ravin.exceptions.CpfAlreadyExistsException;
-import com.example.ravin.exceptions.LoginAlreadyExists;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
-public class EmployeeService implements CRUD<EmployeeRequestDto, EmployeeResponseDto, UUID>, IEmployee<EmployeeResponseDto> {
+public class EmployeeService extends AbstractPersonService implements CRUD<EmployeeRequestDto, EmployeeResponseDto, UUID>, IEmployee<EmployeeResponseDto> {
     private final EmployeeRepository employeeRepository;
-    private final UserService userService;
     private final EmployeeMapper mapper;
+
+    public EmployeeService(EmployeeRepository employeeRepository, UserService userService, EmployeeMapper mapper) {
+        super(employeeRepository, userService);
+        this.employeeRepository = employeeRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public List<EmployeeResponseDto> findAll() {
@@ -37,13 +38,7 @@ public class EmployeeService implements CRUD<EmployeeRequestDto, EmployeeRespons
 
     @Override
     public EmployeeResponseDto save(EmployeeRequestDto request) {
-        if (employeeRepository.existsByCpf(request.getCpf())) {
-            throw new CpfAlreadyExistsException();
-        }
-
-        if (userService.existsByLogin(request.getUser().getLogin())) {
-            throw new LoginAlreadyExists();
-        }
+        super.validate(request);
 
         Employee employee = mapper.toEntity(request);
 
@@ -56,24 +51,14 @@ public class EmployeeService implements CRUD<EmployeeRequestDto, EmployeeRespons
 
     @Override
     public EmployeeResponseDto update(UUID id, EmployeeRequestDto request) {
-        Optional<Employee> employee = employeeRepository.findById(id);
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND));
 
-        if (employee.isEmpty()) {
-            throw new EntityNotFoundException(ErrorMessages.EMPLOYEE_NOT_FOUND);
-        }
+        super.validate(request, id);
 
-        if (employeeRepository.existsByCpf(request.getCpf()) && !employee.get().getCpf().equals(request.getCpf())) {
-            throw new CpfAlreadyExistsException();
-        }
-
-        if (userService.existsByLogin(request.getUser().getLogin()) && !employee.get().getUser().getLogin().equals(request.getUser().getLogin())) {
-            throw new LoginAlreadyExists();
-        }
-
-        employee.get().getUser().setRole(request.getPosition().getRole());
+        employee.getUser().setRole(request.getPosition().getRole());
 
         return mapper.toResponse(
-                employeeRepository.save(mapper.updateEntity(employee.get(), request))
+                employeeRepository.save(mapper.updateEntity(employee, request))
         );
     }
 
