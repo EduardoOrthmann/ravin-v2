@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -42,6 +43,7 @@ public abstract class Person implements Auditable {
     private String cpf;
 
     @Column(nullable = false)
+    @ColumnDefault("true")
     private boolean isActive = true;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

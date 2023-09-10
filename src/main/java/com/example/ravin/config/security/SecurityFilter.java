@@ -29,7 +29,8 @@ public class SecurityFilter {
     public static final List<String> POST_WHITELIST = List.of(
             "/auth/login",
             "/auth/register",
-            "/auth/register/customer"
+            "/auth/register/customer",
+            "/auth/register/employee"
     );
 
     private final JwtSecurityFilter jwtSecurityFilter;
@@ -56,6 +57,16 @@ public class SecurityFilter {
                                 mvc.pattern("/customer"),
                                 mvc.pattern("/customer/**")
                         ).hasRole(UserRole.ADMIN.name())
+
+                        // EMPLOYEES
+                        .requestMatchers(
+                                mvc.pattern("/employee"),
+                                mvc.pattern("/employee/**")
+                        ).hasRole(UserRole.ADMIN.name())
+
+                        .requestMatchers(
+                                mvc.pattern("/employee/available-waiters")
+                        ).hasRole(UserRole.EMPLOYEE.name())
 
                         .anyRequest().authenticated()
                 )

@@ -9,6 +9,7 @@ import java.util.Set;
 @AllArgsConstructor
 public enum UserRole {
     ADMIN(Set.of("ROLE_ADMIN", "ROLE_USER")),
+    EMPLOYEE(Set.of("ROLE_SUPERVISOR", "ROLE_USER")),
     USER(Set.of("ROLE_USER"));
 
     private final Set<String> roles;
