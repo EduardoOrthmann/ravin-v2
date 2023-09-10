@@ -1,6 +1,6 @@
 package com.example.ravin.domains.customer;
 
-import com.example.ravin.domains.address.Address;
+import com.example.ravin.domains.person.address.Address;
 import com.example.ravin.domains.person.Person;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.example.ravin.domains.dtos.request;
 
-import com.example.ravin.domains.address.Address;
+import com.example.ravin.domains.person.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

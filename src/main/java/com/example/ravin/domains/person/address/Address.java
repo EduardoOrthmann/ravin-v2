@@ -1,4 +1,4 @@
-package com.example.ravin.domains.address;
+package com.example.ravin.domains.person.address;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Embeddable;
