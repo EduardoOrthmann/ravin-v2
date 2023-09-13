@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -21,9 +19,5 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByLogin(String login) {
         return userRepository.existsByLogin(login);
-    }
-
-    public boolean existsByLoginAndIdNot(String login, UUID id) {
-        return userRepository.existsByLoginAndIdNot(login, id);
     }
 }

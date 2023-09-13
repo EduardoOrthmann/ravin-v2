@@ -6,6 +6,7 @@ import com.example.ravin.domains.dtos.request.CustomerRequestDto;
 import com.example.ravin.domains.dtos.response.CustomerResponseDto;
 import com.example.ravin.domains.person.AbstractPersonService;
 import com.example.ravin.domains.user.UserService;
+import com.example.ravin.enums.UserRole;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,12 @@ public class CustomerService extends AbstractPersonService implements CRUD<Custo
     public CustomerResponseDto save(CustomerRequestDto request) {
         super.validate(request);
 
+        Customer customer = mapper.toEntity(request);
+
+        customer.getUser().setRole(UserRole.USER);
+
         return mapper.toResponse(
-                customerRepository.save(mapper.toEntity(request))
+                customerRepository.save(customer)
         );
     }
 

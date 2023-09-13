@@ -9,16 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "employees")
-@DynamicInsert
-@DynamicUpdate
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,13 +30,16 @@ public class Employee extends Person {
     private Position position;
 
     @Column(nullable = false)
-    @ColumnDefault("CURRENT_DATE")
-    private LocalDate admissionDate = LocalDate.now();
+    private LocalDate admissionDate;
 
     @Column(insertable = false)
     private LocalDate resignationDate;
 
     @Column(nullable = false)
-    @ColumnDefault("true")
     private boolean isAvailable = true;
+
+    @PrePersist
+    public void prePersist() {
+        if (admissionDate == null) admissionDate = LocalDate.now();
+    }
 }

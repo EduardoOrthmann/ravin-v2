@@ -28,7 +28,7 @@ public abstract class AbstractPersonService {
             throw new CpfAlreadyExistsException();
         }
 
-        if (userService.existsByLoginAndIdNot(person.getUser().getLogin(), excludedId)) {
+        if (personRepository.existsByUserLoginAndIdNot(person.getUser().getLogin(), excludedId)) {
             throw new LoginAlreadyExists();
         }
     }
