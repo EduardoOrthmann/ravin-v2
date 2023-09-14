@@ -75,6 +75,13 @@ public class SecurityFilter {
                                 mvc.pattern("/employee/available-waiters")
                         ).hasRole(UserRole.EMPLOYEE.name())
 
+                        // PRODUCTS
+                        .requestMatchers(
+                                mvc.pattern(HttpMethod.POST, "/product"),
+                                mvc.pattern(HttpMethod.PUT, "/product/**"),
+                                mvc.pattern(HttpMethod.DELETE, "/product/**")
+                        ).hasRole(UserRole.ADMIN.name())
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class)
