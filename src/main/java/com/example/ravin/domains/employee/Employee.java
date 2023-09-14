@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "employees")
+@EntityListeners(EmployeeEntityListener.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +30,7 @@ public class Employee extends Person {
     @Column(nullable = false)
     private Position position;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDate admissionDate;
 
     @Column(insertable = false)
@@ -37,9 +38,4 @@ public class Employee extends Person {
 
     @Column(nullable = false)
     private boolean isAvailable = true;
-
-    @PrePersist
-    public void prePersist() {
-        if (admissionDate == null) admissionDate = LocalDate.now();
-    }
 }
