@@ -21,16 +21,23 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityFilter {
-    public static final List<String> POST_WHITELIST = List.of(
-            "/auth/login",
-            "/auth/register",
-            "/auth/register/customer",
-            "/auth/register/employee"
+    protected static final Map<HttpMethod, List<String>> WHITELIST = Map.of(
+            HttpMethod.GET, List.of(
+                    "/product",
+                    "/product/**"
+            ),
+            HttpMethod.POST, List.of(
+                    "/auth/login",
+                    "/auth/register",
+                    "/auth/register/customer",
+                    "/auth/register/employee"
+            )
     );
 
     private final JwtSecurityFilter jwtSecurityFilter;
@@ -47,8 +54,8 @@ public class SecurityFilter {
                 .authorizeHttpRequests(authorize -> authorize
                         // WHITELIST
                         .requestMatchers(
-                                POST_WHITELIST.stream()
-                                        .map(uri -> mvc.pattern(HttpMethod.POST, uri))
+                                WHITELIST.entrySet().stream()
+                                        .flatMap(entry -> entry.getValue().stream().map(uri -> mvc.pattern(entry.getKey(), uri)))
                                         .toArray(RequestMatcher[]::new)
                         ).permitAll()
 

@@ -25,11 +25,11 @@ public class AuthController {
 
     @PostMapping({"/register/customer", "/register"})
     public ResponseEntity<CustomerResponseDto> registerCustomer(@RequestBody @Valid CustomerRequestDto request) {
-        return ResponseEntity.ok(authService.registerCustomer(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registerCustomer(request));
     }
 
     @PostMapping("/register/employee")
     public ResponseEntity<EmployeeResponseDto> registerEmployee(@RequestBody @Valid EmployeeRequestDto request) {
-        return ResponseEntity.ok(authService.registerEmployee(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registerEmployee(request));
     }
 }

@@ -11,6 +11,9 @@ public class ErrorMessages {
     // Authentication Error Messages
     public final String UNSUFFICIENT_CREDENTIALS = "Credenciais insuficientes";
 
+    // Validation Error Messages
+    public final String VALIDATION_ERROR = "Erro de validação";
+
     // User Error Messages
     public final String USER_NOT_FOUND = "O usuário não foi encontrado";
     public final String USERNAME_NOT_FOUND = "O nome de usuário não foi encontrado";
@@ -25,6 +28,6 @@ public class ErrorMessages {
     // Employee Error Messages
     public final String EMPLOYEE_NOT_FOUND = "O funcionário não foi encontrado";
 
-    // Validation Error Messages
-    public final String VALIDATION_ERROR = "Erro de validação";
+    // Product Error Messages
+    public final String PRODUCT_NOT_FOUND = "O produto não foi encontrado";
 }

@@ -4,13 +4,14 @@ import com.example.ravin.domains.user.UserService;
 import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.utils.constants.ErrorMessages;
+import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
+@NonNullApi
 @RequiredArgsConstructor
 public class JwtSecurityFilter extends OncePerRequestFilter {
     private final UserService userService;
@@ -31,9 +33,9 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver resolver;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         try {
             String token = jwtUtils.getTokenFromHeader(request).orElseThrow(() -> new JwtSecurityException(ErrorMessages.TOKEN_NOT_FOUND));
@@ -51,12 +53,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        boolean isWhiteListed = false;
-
-        switch (request.getMethod()) {
-            case "POST" -> isWhiteListed = SecurityFilter.POST_WHITELIST.contains(request.getRequestURI());
-        }
-
-        return isWhiteListed;
+        return SecurityFilter.WHITELIST.entrySet().stream()
+                .anyMatch(entry -> entry.getKey().equals(HttpMethod.valueOf(request.getMethod())) &&
+                        entry.getValue().stream().anyMatch(uri -> uri.equals(request.getRequestURI())));
     }
 }
