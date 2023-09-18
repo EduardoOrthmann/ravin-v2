@@ -1,5 +1,6 @@
 package com.example.ravin.domains.dtos.request;
 
+import com.example.ravin.enums.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,6 +27,9 @@ public class ProductRequestDto {
 
     @Size(max = 1000, message = "A descrição deve ter no máximo 1000 caracteres")
     private String description;
+
+    @NotNull(message = "A categoria não pode ser nula")
+    private ProductCategory category;
 
     @NotNull(message = "O código não pode ser nulo")
     @NotBlank(message = "O código não pode ser vazio")

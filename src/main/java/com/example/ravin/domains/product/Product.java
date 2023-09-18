@@ -1,6 +1,7 @@
 package com.example.ravin.domains.product;
 
 import com.example.ravin.common_interfaces.Auditable;
+import com.example.ravin.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,10 @@ public class Product implements Auditable {
 
     @Column(length = 1000)
     private String description;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
 
     @Column(nullable = false, unique = true, length = 20)
     private String code;

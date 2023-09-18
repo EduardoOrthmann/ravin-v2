@@ -1,5 +1,6 @@
 package com.example.ravin.domains.dtos.response;
 
+import com.example.ravin.enums.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,8 @@ public class ProductResponseDto {
     private String name;
 
     private String description;
+
+    private ProductCategory category;
 
     private String code;
 
