@@ -30,7 +30,7 @@ public class SecurityFilter {
     protected static final Map<HttpMethod, List<String>> WHITELIST = Map.of(
             HttpMethod.GET, List.of(
                     "/product",
-                    "/product/**"
+                    "/product/*"
             ),
             HttpMethod.POST, List.of(
                     "/auth/login",
@@ -62,13 +62,13 @@ public class SecurityFilter {
                         // CUSTOMERS
                         .requestMatchers(
                                 mvc.pattern("/customer"),
-                                mvc.pattern("/customer/**")
+                                mvc.pattern("/customer/*")
                         ).hasRole(UserRole.ADMIN.name())
 
                         // EMPLOYEES
                         .requestMatchers(
                                 mvc.pattern("/employee"),
-                                mvc.pattern("/employee/**")
+                                mvc.pattern("/employee/*")
                         ).hasRole(UserRole.ADMIN.name())
 
                         .requestMatchers(
@@ -78,8 +78,8 @@ public class SecurityFilter {
                         // PRODUCTS
                         .requestMatchers(
                                 mvc.pattern(HttpMethod.POST, "/product"),
-                                mvc.pattern(HttpMethod.PUT, "/product/**"),
-                                mvc.pattern(HttpMethod.DELETE, "/product/**")
+                                mvc.pattern(HttpMethod.PUT, "/product/*"),
+                                mvc.pattern(HttpMethod.DELETE, "/product/*")
                         ).hasRole(UserRole.ADMIN.name())
 
                         .anyRequest().authenticated()

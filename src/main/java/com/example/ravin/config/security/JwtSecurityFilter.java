@@ -16,9 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.io.IOException;
 
@@ -28,6 +30,7 @@ import java.io.IOException;
 public class JwtSecurityFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JwtUtils jwtUtils;
+    private final HandlerMappingIntrospector introspection;
 
     @Qualifier("handlerExceptionResolver")
     private final HandlerExceptionResolver resolver;
@@ -53,8 +56,12 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspection);
+        HttpMethod requestMethod = HttpMethod.valueOf(request.getMethod());
+
         return SecurityFilter.WHITELIST.entrySet().stream()
-                .anyMatch(entry -> entry.getKey().equals(HttpMethod.valueOf(request.getMethod())) &&
-                        entry.getValue().stream().anyMatch(uri -> uri.equals(request.getRequestURI())));
+                .filter(entry -> entry.getKey().equals(requestMethod))
+                .flatMap(entry -> entry.getValue().stream().map(uri -> mvc.pattern(entry.getKey(), uri)))
+                .anyMatch(matcher -> matcher.matches(request));
     }
 }

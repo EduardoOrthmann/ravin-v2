@@ -2,6 +2,7 @@ package com.example.ravin.domains.product;
 
 import com.example.ravin.domains.dtos.request.ProductRequestDto;
 import com.example.ravin.domains.dtos.response.ProductResponseDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> save(@RequestBody ProductRequestDto request) {
+    public ResponseEntity<ProductResponseDto> save(@RequestBody @Valid ProductRequestDto request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> update(@PathVariable UUID id, @RequestBody ProductRequestDto request) {
+    public ResponseEntity<ProductResponseDto> update(@PathVariable UUID id, @RequestBody @Valid ProductRequestDto request) {
         return ResponseEntity.ok(productService.update(id, request));
     }
 
