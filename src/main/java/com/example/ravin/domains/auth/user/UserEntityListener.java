@@ -1,4 +1,4 @@
-package com.example.ravin.domains.user;
+package com.example.ravin.domains.auth.user;
 
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;

@@ -2,7 +2,7 @@ package com.example.ravin.domains.dtos.mapper;
 
 import com.example.ravin.domains.dtos.request.EmployeeRequestDto;
 import com.example.ravin.domains.dtos.response.EmployeeResponseDto;
-import com.example.ravin.domains.employee.Employee;
+import com.example.ravin.domains.person.employee.Employee;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

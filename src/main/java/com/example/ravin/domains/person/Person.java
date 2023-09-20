@@ -1,7 +1,7 @@
 package com.example.ravin.domains.person;
 
 import com.example.ravin.common_interfaces.Auditable;
-import com.example.ravin.domains.user.User;
+import com.example.ravin.domains.auth.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

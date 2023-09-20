@@ -1,4 +1,4 @@
-package com.example.ravin.domains.customer;
+package com.example.ravin.domains.person.customer;
 
 import com.example.ravin.domains.person.address.Address;
 import com.example.ravin.domains.person.Person;

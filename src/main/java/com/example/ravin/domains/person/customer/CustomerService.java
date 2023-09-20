@@ -1,11 +1,11 @@
-package com.example.ravin.domains.customer;
+package com.example.ravin.domains.person.customer;
 
 import com.example.ravin.common_interfaces.CRUD;
 import com.example.ravin.domains.dtos.mapper.CustomerMapper;
 import com.example.ravin.domains.dtos.request.CustomerRequestDto;
 import com.example.ravin.domains.dtos.response.CustomerResponseDto;
 import com.example.ravin.domains.person.AbstractPersonService;
-import com.example.ravin.domains.user.UserService;
+import com.example.ravin.domains.auth.user.UserService;
 import com.example.ravin.enums.UserRole;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,4 +1,4 @@
-package com.example.ravin.domains.employee;
+package com.example.ravin.domains.person.employee;
 
 import com.example.ravin.domains.person.PersonRepository;
 import org.springframework.data.jpa.repository.JpaRepository;

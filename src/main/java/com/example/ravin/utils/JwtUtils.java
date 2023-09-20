@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.example.ravin.domains.user.User;
+import com.example.ravin.domains.auth.user.User;
 import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.constants.Constants;
 import com.example.ravin.utils.constants.ErrorMessages;

@@ -1,6 +1,6 @@
 package com.example.ravin.domains.dtos.mapper;
 
-import com.example.ravin.domains.user.User;
+import com.example.ravin.domains.auth.user.User;
 import com.example.ravin.domains.dtos.request.UserRequestDto;
 import com.example.ravin.domains.dtos.response.UserResponseDto;
 import org.modelmapper.ModelMapper;

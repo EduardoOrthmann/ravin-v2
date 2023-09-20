@@ -1,4 +1,4 @@
-package com.example.ravin.domains.user;
+package com.example.ravin.domains.auth.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;

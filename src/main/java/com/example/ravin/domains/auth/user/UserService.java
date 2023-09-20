@@ -1,4 +1,4 @@
-package com.example.ravin.domains.user;
+package com.example.ravin.domains.auth.user;
 
 import com.example.ravin.utils.constants.ErrorMessages;
 import lombok.RequiredArgsConstructor;

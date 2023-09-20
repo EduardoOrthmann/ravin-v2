@@ -1,15 +1,15 @@
 package com.example.ravin.domains.auth;
 
-import com.example.ravin.domains.customer.Customer;
-import com.example.ravin.domains.customer.CustomerService;
+import com.example.ravin.domains.person.customer.Customer;
+import com.example.ravin.domains.person.customer.CustomerService;
 import com.example.ravin.domains.dtos.mapper.CustomerMapper;
 import com.example.ravin.domains.dtos.mapper.EmployeeMapper;
 import com.example.ravin.domains.dtos.request.CustomerRequestDto;
 import com.example.ravin.domains.dtos.request.EmployeeRequestDto;
 import com.example.ravin.domains.dtos.response.CustomerResponseDto;
 import com.example.ravin.domains.dtos.response.EmployeeResponseDto;
-import com.example.ravin.domains.employee.EmployeeService;
-import com.example.ravin.domains.user.User;
+import com.example.ravin.domains.person.employee.EmployeeService;
+import com.example.ravin.domains.auth.user.User;
 import com.example.ravin.domains.dtos.request.LoginRequestDto;
 import com.example.ravin.enums.UserRole;
 import com.example.ravin.utils.JwtUtils;

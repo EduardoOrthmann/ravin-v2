@@ -1,11 +1,11 @@
-package com.example.ravin.domains.employee;
+package com.example.ravin.domains.person.employee;
 
 import com.example.ravin.common_interfaces.CRUD;
 import com.example.ravin.domains.dtos.mapper.EmployeeMapper;
 import com.example.ravin.domains.dtos.request.EmployeeRequestDto;
 import com.example.ravin.domains.dtos.response.EmployeeResponseDto;
 import com.example.ravin.domains.person.AbstractPersonService;
-import com.example.ravin.domains.user.UserService;
+import com.example.ravin.domains.auth.user.UserService;
 import com.example.ravin.utils.constants.ErrorMessages;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

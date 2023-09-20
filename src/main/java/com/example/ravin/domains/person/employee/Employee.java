@@ -1,4 +1,4 @@
-package com.example.ravin.domains.employee;
+package com.example.ravin.domains.person.employee;
 
 import com.example.ravin.domains.person.Person;
 import com.example.ravin.enums.EducationLevel;

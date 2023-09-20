@@ -1,4 +1,4 @@
-package com.example.ravin.domains.employee;
+package com.example.ravin.domains.person.employee;
 
 import jakarta.persistence.PrePersist;
 import org.springframework.stereotype.Component;

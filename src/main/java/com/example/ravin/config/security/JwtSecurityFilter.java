@@ -1,6 +1,6 @@
 package com.example.ravin.config.security;
 
-import com.example.ravin.domains.user.UserService;
+import com.example.ravin.domains.auth.user.UserService;
 import com.example.ravin.exceptions.JwtSecurityException;
 import com.example.ravin.utils.JwtUtils;
 import com.example.ravin.utils.constants.ErrorMessages;
