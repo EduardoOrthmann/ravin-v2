@@ -1,7 +1,7 @@
 package com.example.ravin.domains.person;
 
-import com.example.ravin.domains.dtos.request.PersonRequestDto;
 import com.example.ravin.domains.auth.user.UserService;
+import com.example.ravin.domains.dtos.request.PersonRequestDto;
 import com.example.ravin.exceptions.CpfAlreadyExistsException;
 import com.example.ravin.exceptions.LoginAlreadyExists;
 import lombok.RequiredArgsConstructor;

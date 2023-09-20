@@ -5,7 +5,7 @@ import com.example.ravin.enums.OrderStatus;
 
 import java.util.List;
 
-public interface IOrder <T, U, V> extends CRUD<T, U, V> {
+public interface OrderService<T, U, V> extends CRUD<T, U, V> {
     List<U> findAllByStatus(OrderStatus status);
     void closeOrder(V id);
 }
