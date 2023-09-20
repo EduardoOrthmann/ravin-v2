@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, PersonEntityListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,7 +42,7 @@ public abstract class Person implements Auditable {
     private String cpf;
 
     @Column(nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id", nullable = false)

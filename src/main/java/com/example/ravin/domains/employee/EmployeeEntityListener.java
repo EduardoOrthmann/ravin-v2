@@ -10,5 +10,6 @@ public class EmployeeEntityListener {
     @PrePersist
     public void prePersist(Employee employee) {
         if (employee.getAdmissionDate() == null) employee.setAdmissionDate(LocalDate.now());
+        employee.setAvailable(true);
     }
 }

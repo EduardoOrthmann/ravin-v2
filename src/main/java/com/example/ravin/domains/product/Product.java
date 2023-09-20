@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "products")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, ProductEntityListener.class})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -51,7 +51,7 @@ public class Product implements Auditable {
     private LocalTime timeToPrepare;
 
     @Column(nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)

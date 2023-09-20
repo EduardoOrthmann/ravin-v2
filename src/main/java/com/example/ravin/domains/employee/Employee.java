@@ -37,5 +37,5 @@ public class Employee extends Person {
     private LocalDate resignationDate;
 
     @Column(nullable = false)
-    private boolean isAvailable = true;
+    private boolean isAvailable;
 }
